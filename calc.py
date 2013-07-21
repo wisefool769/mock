@@ -1,4 +1,5 @@
 import math
+# Some helper math functions
 
 def erf(x):
     # Code from John D Cook.
@@ -25,3 +26,12 @@ def erf(x):
 def phi(x):
     # Returns the standard normal density
     return 0.5*(1.0 + erf(x/math.sqrt(2)))
+
+def sgn(x):
+    # Returns the sign of x: -1, 0, or 1
+    if x < 0:
+        return -1
+    elif x == 0:
+        return 0
+    else:
+        return 1
