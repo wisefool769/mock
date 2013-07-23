@@ -6,18 +6,19 @@ import calc
 import math
 
 class OptionBoard:
-	def __init__(self, spot, vol, rate, time_to_exp, strike_increments = 5, n = 5):
+	def __init__(self, spot, vol, rate, exp_mo, strike_increments = 5, n = 5):
 		self.S = spot
 		self.sigma = vol
 		self.r = rate
-		self.tau = time_to_exp
+		self.exp_month = self.exp_month_int(exp_mo)
+		self.tau = calc.time_to_exp(self.exp_month)
+		self.exp_date = calc.expiration(self.exp_month)
 		self.k_inc = strike_increments
 		self.num_options = n
 		self.strikes = self.get_strikes()
 		self.options = self.get_options(self.strikes)
 		self.rc = self.options[0].rc
 		
-
 	def get_strikes(self):
 		nearest_increment = round(self.S / self.k_inc) * self.k_inc
 		direction = calc.sgn(self.S-self.k_inc)
@@ -38,6 +39,12 @@ class OptionBoard:
 		for k in strikes:
 			options.append(Option(self.S, k, self.sigma, self.r, self.tau))
 		return options
+
+	def exp_month_int(self, exp_mo):
+		if isinstance(exp_mo, int):
+			return exp_mo
+		else:
+			return calc.month_to_int(exp_mo)
 
 	def print_board(self):
 		print("\nSpot: " + str(self.S) + "    r/c = " + str(self.rc))

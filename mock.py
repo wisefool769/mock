@@ -1,12 +1,17 @@
 from option_board import OptionBoard
 
+# TODO: 
+# give information (cust offers, b/w, straddles, etc.)
+# write csv file for board export
+
 S = 51.34
 sigma = .5
 r = .05
-tau = 30/365
+month = "Jul"
 k_inc = 5
 num_options = 5
 
-board = OptionBoard(S, sigma, r, tau)
+board = OptionBoard(S, sigma, r, month)
 
-board.print_board()
+print(board.tau)
+print(board.exp_date)

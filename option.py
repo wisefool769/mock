@@ -30,7 +30,11 @@ class Option:
         pv_strike = self.K*math.exp(-1*self.r*self.tau)
         d1 = 1/vol_adj_time*(math.log(self.S/self.K) + (self.r + self.sigma ** 2 / 2)*math.sqrt(self.tau))
         d2 = d1 - vol_adj_time
-        call = max(norm.cdf(d1)*self.S - norm.cdf(d2)*pv_strike,0)
+        bsm_call = norm.cdf(d1)*self.S - norm.cdf(d2)*pv_strike
+        # the constant r/c gives these values an error from 
+        # bsm prices, and so we evenly express this error in 
+        # the call (by adding rc/2) and the put (subtracting rc/2)
+        call = max(bsm_call+self.rc/2, 0)
         return round(call,2)
 
     def ATFrc(self):
@@ -40,7 +44,7 @@ class Option:
 
     def pcp(self):
         # returns the value of the put based on put-call-parity
-        put = max(self.C + (self.K - self.S) - self.rc,0)
+        put = max(self.C + (self.K - self.S) - self.rc/2,0)
         return round(put,2)
 
     def print_option(self):
