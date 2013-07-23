@@ -83,4 +83,9 @@ def month_to_int(month_str):
         return 11
     elif month_str == "Dec":
         return 12
-    
+
+def int_to_month(month_int):
+    months = ["Jan","Feb","Mar","Apr",
+                "May","Jun","Jul","Aug",
+                "Sep","Oct","Nov","Dec"]
+    return months[month_int-1]

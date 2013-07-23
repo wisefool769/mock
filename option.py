@@ -33,8 +33,9 @@ class Option:
         bsm_call = norm.cdf(d1)*self.S - norm.cdf(d2)*pv_strike
         # the constant r/c gives these values an error from 
         # bsm prices, and so we evenly express this error in 
-        # the call (by adding rc/2) and the put (subtracting rc/2)
-        call = max(bsm_call+self.rc/2, 0)
+        # the call (by adding rc/2) and the put (subtracting rc)
+        pv_interest = self.K - self.K*math.exp(-1*self.r*self.tau)
+        call = max(bsm_call+(self.rc-pv_interest)/2, 0)
         return round(call,2)
 
     def ATFrc(self):
@@ -44,7 +45,7 @@ class Option:
 
     def pcp(self):
         # returns the value of the put based on put-call-parity
-        put = max(self.C + (self.K - self.S) - self.rc/2,0)
+        put = max(self.C + (self.K - self.S) - self.rc,0)
         return round(put,2)
 
     def print_option(self):
