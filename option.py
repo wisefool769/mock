@@ -5,10 +5,11 @@
 
 import math
 import random
+from calc import price_format
 from scipy.stats import norm
 
 class Option:
-    def __init__(self, spot, strike, vol, rate, time_to_exp):
+    def __init__(self, spot, strike, vol, r, time_to_exp):
         # note that time to expiration here is in years,
         # as it is in the BSM model.
         self.S = spot
@@ -17,14 +18,14 @@ class Option:
         self.r = rate
         self.tau = max(time_to_exp,0)
         self.forward = self.S*math.exp(self.r*self.tau)
-        self.rc = self.ATFrc()
-        self.C = self.bsm_call()
-        self.P = self.pcp_put()
+        self.rc = self.get_rc()
         self.vol_adj_time = self.sigma * math.sqrt(self.tau)
         self.d1 = 1/self.vol_adj_time*(math.log(self.S/self.K) + (self.r + 0.5 * self.sigma ** 2) * self.tau)
         self.d2 = self.d1 - self.vol_adj_time
-        self.call_delta = self.get_call_delta()
-        self.put_delta = self.call_delta - 1.0
+        self.C = self.bsm_call()
+        self.P = self.pcp_put()
+        # self.call_delta = self.get_call_delta()
+        # self.put_delta = self.call_delta - 1.0
         # self.call_vega = self.get_call_vega()
         # self.put_vega = self.call_vega
         # self.call_theta = self.get_call_theta()
@@ -49,12 +50,16 @@ class Option:
         # pv_interest = self.K - self.K*math.exp(-1*self.r*self.tau)
         # call = max(bsm_call+(self.rc-pv_interest)/2, 0)
         call = max(call_price, 0)
-        return round(call,2)
+        return round(call, 2)
 
     def ATFrc(self):
         # computes the reversal/conversion at the forward price
         rc = self.forward*(1-math.exp(-1*self.r*self.tau))
-        return round(rc, 2)
+        return round(20*rc)/20.0
+
+    # def get_rate(self):
+    #     # computes the rate r given an r/c
+    #     return 1/self.tau*math.log(1.0+self.rc/self.S)
 
     def pcp_put(self):
         # returns the value of the put based on put-call-parity
@@ -77,4 +82,4 @@ class Option:
         return None
             
     def print_option(self):
-        print(str(self.C) + "\t" + str(self.K) + "\t" + str(self.P))
+        print(price_format(self.C) + "\t" + str(self.K) + "\t" + price_format(self.P))

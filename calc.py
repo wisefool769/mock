@@ -11,6 +11,20 @@ def sgn(x):
     else:
         return 1
 
+def two_digit_str(m):
+    if m < 10:
+        return "0" + str(m)
+    else:
+        return str(m)
+
+def price_format(price):
+    whole_part = int(price)
+    decimal_times_100 = int(round(100*(price - whole_part)))
+    if decimal_times_100 < 10:
+        return str(whole_part)+".0"+str(decimal_times_100)
+    else:
+        return str(whole_part)+"."+str(decimal_times_100)
+
 def time_to_exp(month):
     delta = expiration(month) - date.today()
     return delta.days/365.0
