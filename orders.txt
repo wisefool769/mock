@@ -1,0 +1,4 @@
+{'prices': [5.0, 5.2], 'quantities': [40, 50], 'direction': market, 'product': call, 'months': ['oct'], 'strikes': [70.0]}
+{'prices': [4.8, 5.0], 'quantities': [200, 500], 'direction': market, 'product': reversal, 'months': ['oct', 'jan'], 'strikes': [75.0, 80.0]}
+{'prices': [23.0], 'quantities': [80], 'direction': bid, 'product': put, 'months': ['oct', 'jan'], 'strikes': [60.0, 80.0]}
+{'prices': [4.0, 4.3], 'quantities': [200, 400], 'direction': market, 'product': put, 'months': ['oct'], 'strikes': [60.0, 65.0]}

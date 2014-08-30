@@ -38,7 +38,7 @@ def get_bsm_params(prices):
         params[symbol]["spot"] = prices[symbol][-1]
         log_prices = [math.log(p) for p in prices[symbol]]
         log_returns = [j-i for i, j in zip(log_prices[:-1], log_prices[1:])]
-        params[symbol]["volatility"] = std(array(log_returns)) / days_in_years
+        params[symbol]["volatility"] = std(array(log_returns)) * math.sqrt(days_in_years)
         # CBOE has set rules on strike increments based on stock price
         # 2.50 for stocks below $25
         if params[symbol]["spot"] < 25:
@@ -50,9 +50,6 @@ def get_bsm_params(prices):
         else:
             params[symbol]["strike_increments"] = 10.00
     return params
-
-
-
 
 
 

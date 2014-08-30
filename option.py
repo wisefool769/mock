@@ -9,7 +9,7 @@ from calc import price_format
 from scipy.stats import norm
 
 class Option:
-    def __init__(self, spot, strike, vol, r, time_to_exp):
+    def __init__(self, spot, strike, vol, rate, time_to_exp):
         # note that time to expiration here is in years,
         # as it is in the BSM model.
         self.S = spot
@@ -18,7 +18,7 @@ class Option:
         self.r = rate
         self.tau = max(time_to_exp,0)
         self.forward = self.S*math.exp(self.r*self.tau)
-        self.rc = self.get_rc()
+        self.rc = self.get_ATFrc()
         self.vol_adj_time = self.sigma * math.sqrt(self.tau)
         self.d1 = 1/self.vol_adj_time*(math.log(self.S/self.K) + (self.r + 0.5 * self.sigma ** 2) * self.tau)
         self.d2 = self.d1 - self.vol_adj_time
@@ -52,7 +52,7 @@ class Option:
         call = max(call_price, 0)
         return round(call, 2)
 
-    def ATFrc(self):
+    def get_ATFrc(self):
         # computes the reversal/conversion at the forward price
         rc = self.forward*(1-math.exp(-1*self.r*self.tau))
         return round(20*rc)/20.0

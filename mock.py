@@ -6,10 +6,10 @@ from option_board import OptionBoard
 # write .tex file for board export
 
 start_day = "2014-01-01"
-month_1 = "Aug"
-month_2 = "Sep"
+month_1 = "Jan"
+month_2 = "Feb"
 num_options = 5
-num_symbols = 0
+num_symbols = 1
 r = 0.05
 num_hints = 5
 
@@ -27,18 +27,17 @@ tex_footer = "\n\n\\end{document}"
 
 all_tex += tex_header
 
-# for symbol in symbol_params:
-#     S = symbol_params[symbol]["spot"]
-#     sigma = symbol_params[symbol]["volatility"]
-#     k_inc = symbol_params[symbol]["strike_increments"]
-#     board_1 = OptionBoard(S, sigma, r, month_1, symbol, k_inc, num_options, num_hints)
-#     tex_1 = board_1.to_tex()
-#     board_2 = OptionBoard(S, sigma, r, month_2, symbol, k_inc, num_options, num_hints)
-#     tex_2 = board_2.to_tex()
-    # all_tex += tex_1 + tex_mid + tex_2 + tex_page
-
-all_tex += tex_mid + tex_page
-
+for i,symbol in enumerate(symbol_params):
+    S = symbol_params[symbol]["spot"]
+    sigma = symbol_params[symbol]["volatility"]
+    k_inc = symbol_params[symbol]["strike_increments"]
+    board_1 = OptionBoard(S, sigma, r, month_1, symbol, k_inc, num_options, num_hints)
+    tex_1 = board_1.to_tex(k_inc)
+    board_2 = OptionBoard(S, sigma, r, month_2, symbol, k_inc, num_options, num_hints)
+    tex_2 = board_2.to_tex(k_inc)
+    all_tex += tex_1 + tex_mid + tex_2
+    if (i+1) != len(symbol_params):
+        all_tex += tex_page
 
 all_tex += tex_footer
 with open("board.tex", "w+") as f:

@@ -11,19 +11,39 @@ def sgn(x):
     else:
         return 1
 
+def contains_substring(order, phrases_list):
+    return any(substring in order for substring in phrases_list)
+
+def which_substring(order, phrases_list):
+    for e in phrases_list:
+        if e in order:
+            return e
+    return False
+
+def isfloat(value):
+  try:
+    float(value)
+    return True
+  except ValueError:
+    return False
+
 def two_digit_str(m):
     if m < 10:
         return "0" + str(m)
     else:
         return str(m)
 
-def price_format(price):
-    whole_part = int(price)
-    decimal_times_100 = int(round(100*(price - whole_part)))
-    if decimal_times_100 < 10:
-        return str(whole_part)+".0"+str(decimal_times_100)
+def price_format(price, dec = True):
+    # whole_part = math.floor(price)
+    # decimal_times_100 = int(round(100*(price - whole_part)))
+    if dec:
+        ret = str(float(round(price, 2)))
+        dec_part = ret.split(".")[1]
+        if len(dec_part) == 1:
+            ret += "0"
+        return ret
     else:
-        return str(whole_part)+"."+str(decimal_times_100)
+        return str(round(price))
 
 def time_to_exp(month):
     delta = expiration(month) - date.today()
